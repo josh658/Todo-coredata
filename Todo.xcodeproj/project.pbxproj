@@ -14,6 +14,8 @@
 		DB16510D2A3A733D00DD1207 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB16510B2A3A733D00DD1207 /* LaunchScreen.storyboard */; };
 		DB1651162A3A73F300DD1207 /* TodoDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DB1651142A3A73F300DD1207 /* TodoDataModel.xcdatamodeld */; };
 		DB26B25F2A3A80E200946257 /* ToDoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB26B25E2A3A80E200946257 /* ToDoTableViewController.swift */; };
+		DBE40DF62A43AE3C00558A76 /* PersonTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE40DF52A43AE3C00558A76 /* PersonTableViewController.swift */; };
+		DBE40E002A43B90900558A76 /* PersonTodoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE40DFF2A43B90900558A76 /* PersonTodoTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		DB16510E2A3A733D00DD1207 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB1651152A3A73F300DD1207 /* Todo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Todo.xcdatamodel; sourceTree = "<group>"; };
 		DB26B25E2A3A80E200946257 /* ToDoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTableViewController.swift; sourceTree = "<group>"; };
+		DBE40DF52A43AE3C00558A76 /* PersonTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonTableViewController.swift; sourceTree = "<group>"; };
+		DBE40DFF2A43B90900558A76 /* PersonTodoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonTodoTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,10 +66,12 @@
 				DB1650FF2A3A733C00DD1207 /* SceneDelegate.swift */,
 				DB26B25E2A3A80E200946257 /* ToDoTableViewController.swift */,
 				DB1651032A3A733C00DD1207 /* Main.storyboard */,
+				DBE40DF52A43AE3C00558A76 /* PersonTableViewController.swift */,
 				DB1651092A3A733D00DD1207 /* Assets.xcassets */,
 				DB16510B2A3A733D00DD1207 /* LaunchScreen.storyboard */,
 				DB16510E2A3A733D00DD1207 /* Info.plist */,
 				DB1651142A3A73F300DD1207 /* TodoDataModel.xcdatamodeld */,
+				DBE40DFF2A43B90900558A76 /* PersonTodoTableViewController.swift */,
 			);
 			path = Todo;
 			sourceTree = "<group>";
@@ -141,6 +147,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBE40E002A43B90900558A76 /* PersonTodoTableViewController.swift in Sources */,
+				DBE40DF62A43AE3C00558A76 /* PersonTableViewController.swift in Sources */,
 				DB1650FE2A3A733C00DD1207 /* AppDelegate.swift in Sources */,
 				DB26B25F2A3A80E200946257 /* ToDoTableViewController.swift in Sources */,
 				DB1651002A3A733C00DD1207 /* SceneDelegate.swift in Sources */,

@@ -1,37 +1,32 @@
 //
-//  ToDoTableViewController.swift
+//  PersonTableViewController.swift
 //  Todo
 //
-//  Created by Cambrian on 2023-06-14.
+//  Created by Cambrian on 2023-06-21.
 //
 
 import UIKit
 import CoreData
 
-class ToDoTableViewController: UITableViewController {
+class PersonTableViewController: UITableViewController {
 
-    var container = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
-    var todos = [Todo]()
+    var container: NSPersistentContainer!
+    var people: [Person] = []
     
-    @IBAction func saveContext(_ sender: Any) {
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
-    }
-    @IBAction func addToDo(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "new ToDo", message: "what is the ToDo", preferredStyle: .alert)
+    @IBAction func addPerson(_ sender: Any) {
+        let alert = UIAlertController(title: "new Person", message: "member name", preferredStyle: .alert)
         
         let alertActionOK = UIAlertAction(title: "Add", style: .default) {
             _ in
             
             let textField = alert.textFields![0]
             
-            let toDo = Todo(context: self.container.viewContext)
-            toDo.title = textField.text
-            toDo.isComplete = Int.random(in: 0...1) == 1
-//            self.todos.append(toDo)
+            let person = Person(context: self.container.viewContext)
+            person.name = textField.text
             
-            for (i, t) in self.todos.enumerated() {
-                if t.title! > toDo.title! {
-                    self.todos.insert(toDo, at: i)
+            for (i, t) in self.people.enumerated() {
+                if t.name! > person.name! {
+                    self.people.insert(person, at: i)
                     self.tableView.insertRows(at: [IndexPath(row: i, section: 0)], with: .automatic)
                     break
                 }
@@ -40,7 +35,7 @@ class ToDoTableViewController: UITableViewController {
         let alertActionCancel = UIAlertAction(title: "Cancel", style: .cancel)
         
         alert.addTextField(){ textField in
-            textField.placeholder = "ToDo Name"
+            textField.placeholder = "Person Name"
         }
         
         alert.addAction(alertActionCancel)
@@ -54,21 +49,22 @@ class ToDoTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        container = appDelegate.persistentContainer
+        
+        let fetchRequest = NSFetchRequest<Person>(entityName: "Person")
+        
+        let orderByName = NSSortDescriptor(key: "name", ascending: true)
+        
+        fetchRequest.sortDescriptors = [orderByName]
+        
+        people = try! container.viewContext.fetch(fetchRequest)
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        
-        let fetchRequest = NSFetchRequest<Todo>(entityName: "Todo")
-        
-        let orderByTitle = NSSortDescriptor(key: "title", ascending: true)
-        let orderByCompleteness = NSSortDescriptor(key: "isComplete", ascending: true)
-        
-        fetchRequest.sortDescriptors = [orderByTitle, orderByCompleteness]
-        
-        todos = try! container.viewContext.fetch(fetchRequest)
-        print(todos.count)
     }
 
     // MARK: - Table view data source
@@ -80,19 +76,19 @@ class ToDoTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return todos.count
+        return people.count
     }
 
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "personCell", for: indexPath)
 
         // Configure the cell...
-        cell.textLabel!.text = todos[indexPath.row].title
-        cell.detailTextLabel!.text = todos[indexPath.row].isComplete ? "true" : "false"
+        cell.textLabel!.text = people[indexPath.row].name
 
         return cell
     }
+
 
     /*
     // Override to support conditional editing of the table view.
@@ -129,14 +125,19 @@ class ToDoTableViewController: UITableViewController {
     }
     */
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        
+        let dst = segue.destination as! PersonTodoTableViewController
+        
+        let index = tableView.indexPathForSelectedRow!.row
+        
+        dst.person = people[index]
+        dst.container = container
     }
-    */
 
 }

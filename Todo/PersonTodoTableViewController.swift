@@ -1,22 +1,20 @@
 //
-//  ToDoTableViewController.swift
+//  PersonTodoTableViewController.swift
 //  Todo
 //
-//  Created by Cambrian on 2023-06-14.
+//  Created by Cambrian on 2023-06-21.
 //
 
 import UIKit
 import CoreData
 
-class ToDoTableViewController: UITableViewController {
+class PersonTodoTableViewController: UITableViewController {
 
-    var container = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
-    var todos = [Todo]()
+    var todos: [Todo] = []
+    var container: NSPersistentContainer!
+    var person: Person!
     
-    @IBAction func saveContext(_ sender: Any) {
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
-    }
-    @IBAction func addToDo(_ sender: UIBarButtonItem) {
+    @IBAction func addTodo(_ sender: Any) {
         let alert = UIAlertController(title: "new ToDo", message: "what is the ToDo", preferredStyle: .alert)
         
         let alertActionOK = UIAlertAction(title: "Add", style: .default) {
@@ -27,15 +25,8 @@ class ToDoTableViewController: UITableViewController {
             let toDo = Todo(context: self.container.viewContext)
             toDo.title = textField.text
             toDo.isComplete = Int.random(in: 0...1) == 1
-//            self.todos.append(toDo)
             
-            for (i, t) in self.todos.enumerated() {
-                if t.title! > toDo.title! {
-                    self.todos.insert(toDo, at: i)
-                    self.tableView.insertRows(at: [IndexPath(row: i, section: 0)], with: .automatic)
-                    break
-                }
-            }
+            self.person.addToTodos(toDo)
         }
         let alertActionCancel = UIAlertAction(title: "Cancel", style: .cancel)
         
@@ -50,25 +41,20 @@ class ToDoTableViewController: UITableViewController {
         
         self.present(alert, animated: true)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        todos = person.todos!.allObjects as! [Todo]
+        todos = todos.sorted { t1, t2 in
+            return t1.title! < t2.title!
+        }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        
-        let fetchRequest = NSFetchRequest<Todo>(entityName: "Todo")
-        
-        let orderByTitle = NSSortDescriptor(key: "title", ascending: true)
-        let orderByCompleteness = NSSortDescriptor(key: "isComplete", ascending: true)
-        
-        fetchRequest.sortDescriptors = [orderByTitle, orderByCompleteness]
-        
-        todos = try! container.viewContext.fetch(fetchRequest)
-        print(todos.count)
     }
 
     // MARK: - Table view data source
@@ -80,16 +66,15 @@ class ToDoTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return todos.count
+        return person.todos!.count
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "personTodoCell", for: indexPath)
 
         // Configure the cell...
+//        cell.textLabel!.text = "test"
         cell.textLabel!.text = todos[indexPath.row].title
-        cell.detailTextLabel!.text = todos[indexPath.row].isComplete ? "true" : "false"
 
         return cell
     }
